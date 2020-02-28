@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            tasks: [],
+            input: ""
+          };
+        }
+
+        render() {
+          return (
+            <div>
+              <h1>Tasks</h1>
+              <ul>
+                {this.state.tasks.map((task, i) => (
+                  <li key={i}>
+                    {task}
+                    <button onClick={this.deleteTask}>Delete</button>
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <input
+                  onChange={this.handleChange}
+                  onKeyPress={this.handleEnter}
+                  value={this.state.input}
+                />
+                <button onClick={this.addTask}>Add Task</button>
+              </div>
+            </div>
+            //    {/* <div>
+            //         <h1>Tasks</h1>
+            //         <ul>
+
+            //             {this.state.tasks.map((tasks) =>
+            //                 <li>
+            //                     {tasks}
+            //                 </li>
+            //                 )}
+            //         </ul>
+            //         <div>
+            //             <input onChange ={this.handleChange} value={this.state.input} />
+            //             <button onClick={this.addTask}>Add Task</button>
+            //         </div>
+            //      */}
+          );
+        }
+
+        handleChange = event => {
+          this.setState({
+            input: event.target.value
+          });
+        };
+
+        handleEnter = event => {
+          if (event.key === "Enter") {
+            this.setState(newState => ({
+              tasks: [...newState.tasks, newState.input],
+              input: ""
+            }));
+          }
+        };
+
+        addTask = () => {
+          this.setState(newState => ({
+            tasks: [...newState.tasks, newState.input],
+            input: ""
+          }));
+        };
+
+        deleteTask = event => {
+          const index = event.target.dataset.index;
+          this.setState(newState => {
+            const tasks = [...newState.tasks];
+            tasks.splice(index, 1);
+            return {
+              tasks
+            };
+          });
+        };
+      }
+
+      ReactDOM.render(<App />, document.querySelector("#app"));
+    </script>
+  </body>
+</html>
